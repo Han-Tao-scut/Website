@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLAST Search – BreastCancerDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">
+      <span class="logo-icon">🧬</span> BreastCancerDB
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Home</a>
+      <a href="query.html">Gene Query</a>
+      <a href="blast.html" class="active">BLAST Search</a>
+      <a href="expression.html">Expression Viewer</a>
+      <a href="management.html">Data Management</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" style="padding:2rem 0 1.5rem">
+  <div class="container">
+    <h1>💥 BLAST Sequence Search</h1>
+    <p>Find breast cancer genes matching your nucleotide sequence</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+
+    <!-- Query input -->
+    <div class="card">
+      <h2>Enter Query Sequence</h2>
+      <div class="alert alert-info">
+        <span>ℹ️</span>
+        <div>
+          <strong>BLAST search</strong> compares your nucleotide sequence against all sequences in our database.
+          Paste a raw nucleotide sequence or a FASTA-format sequence. Press <kbd>Ctrl+Enter</kbd> to search.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="seqInput">Nucleotide Sequence (FASTA or raw)</label>
+        <textarea id="seqInput" placeholder=">Query_sequence&#10;ATGGAGGAGCCGCAGTCAGATCCTAGCGTTGAATCAAACGGCCAGCTGTGTTATCTCCTAGGTTGGCTC…" rows="8"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="blastBtn">🔍 Run BLAST</button>
+        <button class="btn btn-secondary" id="clearBlastBtn">✕ Clear</button>
+      </div>
+      <p id="blastSummary" class="text-muted mt-2" style="font-size:.88rem"></p>
+    </div>
+
+    <!-- Example sequences -->
+    <div class="card">
+      <h2>Example Sequences</h2>
+      <div id="sampleSeqs">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="card">
+      <h2>BLAST Results</h2>
+      <div id="blastResults">
+        <p class="text-muted text-center" style="padding:2rem">
+          Enter a sequence above and click "Run BLAST" to see results.
+        </p>
+      </div>
+    </div>
+
+    <!-- About BLAST -->
+    <div class="card">
+      <h2>About This BLAST Implementation</h2>
+      <div class="alert alert-warning">
+        <span>⚠️</span>
+        <div>
+          This is a <strong>simplified local BLAST implementation</strong> for learning purposes.
+          It performs sliding-window alignment scoring against gene sequences in the database.
+          For production use, integrate NCBI BLAST+ or BioPython's BLAST wrapper.
+        </div>
+      </div>
+      <p style="font-size:.9rem;color:var(--text-muted)">
+        The algorithm uses identity percentage, E-value (heuristic approximation), and bit score
+        to rank hits. Results with ≥40% identity are reported, sorted by identity descending.
+        Each search is logged in the database for analysis.
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>BreastCancerDB &copy; 2024 – Breast Cancer RNA-seq Analysis Platform</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+</script>
+<script src="../js/blast.js"></script>
+</body>
+</html>
