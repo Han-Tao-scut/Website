@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gene Query – BreastCancerDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">
+      <span class="logo-icon">🧬</span> BreastCancerDB
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Home</a>
+      <a href="query.html" class="active">Gene Query</a>
+      <a href="blast.html">BLAST Search</a>
+      <a href="expression.html">Expression Viewer</a>
+      <a href="management.html">Data Management</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" style="padding:2rem 0 1.5rem">
+  <div class="container">
+    <h1>🔍 Gene Query</h1>
+    <p>Search breast cancer-related genes by symbol, name, or NCBI ID</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+
+    <!-- Search box -->
+    <div class="card">
+      <h2>Search Genes</h2>
+      <div class="search-row">
+        <input type="text" id="searchInput" placeholder="e.g. TP53, BRCA1, HER2, estrogen receptor…" autofocus>
+        <button class="btn btn-primary" id="searchBtn">🔍 Search</button>
+        <button class="btn btn-secondary" id="clearBtn">✕ Clear</button>
+      </div>
+      <p class="text-muted mt-1" style="font-size:.85rem">
+        Tip: You can search by gene symbol (TP53), partial name (estrogen), or NCBI ID.
+        Press <kbd>Enter</kbd> to search.
+      </p>
+    </div>
+
+    <!-- Search results section -->
+    <div id="searchSection" class="d-none">
+      <div class="card">
+        <h2>Search Results <span id="searchCount" class="text-muted" style="font-size:.9rem;font-weight:400"></span></h2>
+        <div id="searchResults"></div>
+      </div>
+    </div>
+
+    <!-- Full gene list section -->
+    <div id="listSection">
+      <div class="card">
+        <h2>All Genes
+          <span class="text-muted" style="font-size:.85rem;font-weight:400">(paginated list)</span>
+        </h2>
+        <div id="geneList"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Gene detail modal -->
+<div id="geneModal" class="d-none"
+     style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem"
+     onclick="if(event.target===this)closeModal()">
+  <div style="background:#fff;border-radius:var(--radius);padding:1.5rem;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;position:relative">
+    <button onclick="closeModal()"
+            style="position:absolute;top:.6rem;right:.8rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted)">✕</button>
+    <h2 style="margin-bottom:1rem">Gene Detail</h2>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>BreastCancerDB &copy; 2024 – Breast Cancer RNA-seq Analysis Platform</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+// Pre-fill from URL param
+const urlParams = new URLSearchParams(window.location.search);
+const qParam = urlParams.get('q');
+if (qParam) {
+  document.getElementById('searchInput').value = qParam;
+}
+</script>
+<script src="../js/query.js"></script>
+</body>
+</html>

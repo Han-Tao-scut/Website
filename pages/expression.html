@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expression Viewer – BreastCancerDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">
+      <span class="logo-icon">🧬</span> BreastCancerDB
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Home</a>
+      <a href="query.html">Gene Query</a>
+      <a href="blast.html">BLAST Search</a>
+      <a href="expression.html" class="active">Expression Viewer</a>
+      <a href="management.html">Data Management</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" style="padding:2rem 0 1.5rem">
+  <div class="container">
+    <h1>📊 Expression Viewer</h1>
+    <p>Dynamic plots for gene expression in normal vs breast cancer tissue</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+
+    <!-- Gene search -->
+    <div class="card">
+      <h2>Search Gene Expression</h2>
+      <div class="search-row">
+        <input type="text" id="geneSearchInput" placeholder="Enter gene symbol (e.g. TP53, BRCA1, MKI67)…">
+        <button class="btn btn-primary" id="searchExprBtn">📊 Show Expression</button>
+      </div>
+    </div>
+
+    <!-- Single gene result -->
+    <div id="geneExprSection" class="d-none">
+      <div class="card">
+        <h2>
+          <span id="exprGeneSymbol">—</span>
+          <span class="text-muted" style="font-size:.9rem;font-weight:400" id="exprGeneName"></span>
+        </h2>
+
+        <!-- Stats row -->
+        <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:1.2rem">
+          <div class="stat-card">
+            <span class="stat-number" id="exprNormal" style="font-size:1.4rem;color:var(--info)">—</span>
+            <div class="stat-label">Normal Tissue</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="exprCancer" style="font-size:1.4rem;color:var(--danger)">—</span>
+            <div class="stat-label">Cancer Tissue</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="exprLFC" style="font-size:1.4rem">—</span>
+            <div class="stat-label">log2 Fold Change</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="exprPval" style="font-size:1.4rem">—</span>
+            <div class="stat-label">P-value</div>
+          </div>
+          <div class="stat-card" style="justify-content:center;align-items:center;display:flex;flex-direction:column">
+            <div id="exprReg" style="margin-bottom:.3rem">—</div>
+            <div class="stat-label">Regulation</div>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="chart-container" style="max-width:600px">
+          <canvas id="exprBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="geneExprLoading" class="d-none loading-overlay">
+      <div class="spinner"></div><p>Loading expression data…</p>
+    </div>
+    <div id="geneExprAlert" class="alert alert-hidden"></div>
+
+    <!-- Volcano Plot -->
+    <div class="card">
+      <h2>🌋 Volcano Plot – All Genes</h2>
+      <p class="text-muted mb-2" style="font-size:.88rem">
+        Each dot is a gene. Red = up-regulated in cancer, Blue = down-regulated, Grey = not significant.
+        Dashed lines: |log2FC| = 1 and p = 0.05.
+      </p>
+      <div class="chart-container">
+        <canvas id="volcanoChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top DEGs -->
+    <div class="card">
+      <h2>📈 Top 20 Differentially Expressed Genes</h2>
+      <p class="text-muted mb-2" style="font-size:.88rem">
+        Sorted by absolute log2 fold change. Red bars = up-regulated, Blue bars = down-regulated.
+      </p>
+      <div class="chart-container">
+        <canvas id="topDEGsChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>BreastCancerDB &copy; 2024 – Breast Cancer RNA-seq Analysis Platform</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+</script>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="../js/visualization.js"></script>
+</body>
+</html>

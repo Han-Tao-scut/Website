@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Management – BreastCancerDB</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">
+      <span class="logo-icon">🧬</span> BreastCancerDB
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Home</a>
+      <a href="query.html">Gene Query</a>
+      <a href="blast.html">BLAST Search</a>
+      <a href="expression.html">Expression Viewer</a>
+      <a href="management.html" class="active">Data Management</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" style="padding:2rem 0 1.5rem">
+  <div class="container">
+    <h1>⚙️ Data Management</h1>
+    <p>Add, update, and delete gene records in the database</p>
+  </div>
+</section>
+
+<main>
+  <div class="container">
+
+    <div class="alert alert-warning">
+      <span>⚠️</span>
+      <div>
+        <strong>Admin Area:</strong> Changes made here directly modify the database.
+        Deletion of a gene also removes all associated expression data and BLAST sequences (CASCADE).
+      </div>
+    </div>
+
+    <!-- Form section -->
+    <div class="card" id="geneFormSection">
+      <h2 id="formTitle">Add New Gene</h2>
+      <div id="formAlert" class="alert alert-hidden"></div>
+
+      <form id="geneForm">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+
+          <div class="form-group">
+            <label for="fSymbol">Gene Symbol <span style="color:var(--danger)">*</span></label>
+            <input type="text" id="fSymbol" placeholder="e.g. TP53" required maxlength="50">
+          </div>
+
+          <div class="form-group">
+            <label for="fName">Gene Name <span style="color:var(--danger)">*</span></label>
+            <input type="text" id="fName" placeholder="e.g. Tumor Protein P53" required maxlength="200">
+          </div>
+
+          <div class="form-group">
+            <label for="fChr">Chromosome <span style="color:var(--danger)">*</span></label>
+            <input type="text" id="fChr" placeholder="e.g. 17, X, MT" required maxlength="10">
+          </div>
+
+          <div class="form-group">
+            <label for="fNcbi">NCBI Gene ID</label>
+            <input type="text" id="fNcbi" placeholder="e.g. 7157" maxlength="30">
+          </div>
+
+          <div class="form-group">
+            <label for="fNormExpr">Normal Expression (TPM)</label>
+            <input type="number" id="fNormExpr" placeholder="e.g. 45.2" step="0.01" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="fCancExpr">Cancer Expression (TPM)</label>
+            <input type="number" id="fCancExpr" placeholder="e.g. 12.8" step="0.01" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="fPval">P-value</label>
+            <input type="number" id="fPval" placeholder="e.g. 0.001" step="0.0001" min="0" max="1">
+          </div>
+
+          <div class="form-group" style="grid-column:1/-1">
+            <label for="fDesc">Description</label>
+            <textarea id="fDesc" placeholder="Brief description of gene function and role in breast cancer…" rows="3"></textarea>
+          </div>
+
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-success" id="submitBtn">Add Gene</button>
+          <button type="button" class="btn btn-secondary d-none" id="cancelEditBtn">Cancel Edit</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Gene list -->
+    <div class="card">
+      <h2>Gene Records</h2>
+      <div class="search-row mb-2">
+        <input type="text" id="mgmtSearch" placeholder="Search genes…">
+        <button class="btn btn-secondary" id="mgmtSearchBtn">🔍 Search</button>
+        <button class="btn btn-secondary" onclick="loadManagementList()">🔄 Refresh</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Chr</th>
+              <th>Normal / Cancer TPM</th>
+              <th>log2FC</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="mgmtTableBody">
+            <tr><td colspan="7" class="text-center"><div class="spinner"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>BreastCancerDB &copy; 2024 – Breast Cancer RNA-seq Analysis Platform</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+</script>
+<script src="../js/management.js"></script>
+</body>
+</html>
